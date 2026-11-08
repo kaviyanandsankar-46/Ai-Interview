@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - AI Interview Prep</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #ffffff;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --text-light: #0f172a;
+            --text-muted: #475569;
+            --accent-blue: #0284c7;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        body { 
+            background-color: var(--bg-dark); 
+            color: var(--text-light); 
+            min-height: 100vh; 
+            padding-bottom: 60px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Ambient Background Glows */
+        .bg-glow-1 {
+            position: absolute;
+            top: 10%;
+            left: 20%;
+            width: 350px;
+            height: 350px;
+            background: rgba(56, 189, 248, 0.12);
+            filter: blur(120px);
+            border-radius: 50%;
+            z-index: 0;
+            animation: float 8s infinite alternate ease-in-out;
+        }
+
+        .bg-glow-2 {
+            position: absolute;
+            bottom: 20%;
+            right: 20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(129, 140, 248, 0.12);
+            filter: blur(140px);
+            border-radius: 50%;
+            z-index: 0;
+            animation: float 10s infinite alternate-reverse ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-30px) scale(1.1); }
+        }
+
+        .navbar { 
+            position: relative;
+            z-index: 10;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px 5%; 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(20px); 
+            border-bottom: 1px solid #e2e8f0; 
+            margin-bottom: 40px; 
+        }
+
+        .logo { 
+            font-size: 1.5rem; 
+            font-weight: 800; 
+            background: linear-gradient(135deg, #0284c7, #4f46e5); 
+            background-clip: text;
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            text-decoration: none; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover { color: var(--accent-blue); }
+
+        .container { 
+            position: relative;
+            z-index: 10;
+            max-width: 850px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+
+        /* Glassmorphism Profile Card */
+        .profile-card { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid var(--card-border); 
+            border-radius: 28px; 
+            padding: 45px 35px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
+            text-align: center; 
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Animated Glowing Avatar Frame */
+        .avatar-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 25px;
+        }
+
+        .avatar-glow {
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #38bdf8, #818cf8, #34d399);
+            filter: blur(8px);
+            opacity: 0.8;
+            animation: spin 6s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .avatar { 
+            position: relative;
+            z-index: 2;
+            width: 100%; 
+            height: 100%; 
+            border-radius: 50%; 
+            background: #f8fafc; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 3rem; 
+            color: var(--accent-blue); 
+            border: 3px solid #ffffff; 
+        }
+
+        .verified-badge {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            z-index: 3;
+            background: #10b981;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            border: 3px solid #ffffff;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+        }
+
+        .user-name { 
+            font-size: 2.2rem; 
+            font-weight: 800; 
+            color: var(--text-light); 
+            margin-bottom: 6px; 
+            letter-spacing: -0.5px;
+        }
+
+        .user-email { 
+            color: var(--accent-blue); 
+            font-weight: 600; 
+            font-size: 1.05rem;
+            margin-bottom: 25px; 
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(2, 132, 199, 0.08);
+            padding: 6px 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(2, 132, 199, 0.2);
+        }
+
+        /* Streak Badge Banner */
+        .streak-banner {
+            background: rgba(251, 146, 60, 0.08);
+            border: 1px solid rgba(251, 146, 60, 0.3);
+            color: #ea580c;
+            padding: 10px 20px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(251, 146, 60, 0.1);
+        }
+
+        /* Info Grid Cards */
+        .info-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+            gap: 20px; 
+            text-align: left; 
+        }
+
+        .info-item { 
+            background: #f8fafc; 
+            border: 1px solid #e2e8f0; 
+            padding: 20px 24px; 
+            border-radius: 18px; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .info-item:hover {
+            transform: translateY(-4px);
+            background: #ffffff;
+            border-color: rgba(2, 132, 199, 0.4);
+            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.12);
+        }
+
+        .info-icon {
+            font-size: 1.3rem;
+            color: #4f46e5;
+            margin-bottom: 10px;
+        }
+
+        .info-label { 
+            font-size: 0.85rem; 
+            color: var(--text-muted); 
+            font-weight: 600; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px; 
+        }
+
+        .info-value { 
+            font-size: 1.1rem; 
+            color: var(--text-light); 
+            font-weight: 700; 
+        }
+
+        /* Back Button */
+        .btn-back { 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center;
+            gap: 12px; 
+            margin-top: 35px; 
+            padding: 16px 36px; 
+            background: linear-gradient(135deg, #2563eb, #3b82f6); 
+            color: #fff; 
+            text-decoration: none; 
+            border-radius: 16px; 
+            font-weight: 800; 
+            font-size: 1.05rem;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+            transition: all 0.3s ease; 
+        }
+
+        .btn-back:hover { 
+            background: linear-gradient(135deg, #1d4ed8, #0284c7); 
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 35px rgba(2, 132, 199, 0.35);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+
+    <nav class="navbar">
+        <a href="{{ url_for('dashboard') }}" class="logo">
+            <i class="fa-solid fa-brain"></i> AI Interview Prep
+        </a>
+        <a href="{{ url_for('dashboard') }}" class="nav-link">
+            <i class="fa-solid fa-chart-pie"></i> Dashboard
+        </a>
+    </nav>
+
+    <div class="container">
+        <div class="profile-card">
+            
+            <!-- Avatar Frame -->
+            <div class="avatar-container">
+                <div class="avatar-glow"></div>
+                <div class="avatar">
+                    <i class="fa-solid fa-user-astronaut"></i>
+                </div>
+                <div class="verified-badge" title="Active Candidate">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+            </div>
+
+            <h2 class="user-name">{{ user.name }}</h2>
+            <div class="user-email">
+                <i class="fa-regular fa-envelope"></i> {{ user.email }}
+            </div>
+
+            <!-- Daily Practice Streak Badge -->
+            <div>
+                <div class="streak-banner">
+                    <i class="fa-solid fa-fire" style="color: #ea580c;"></i> Daily Practice Streak: <strong>{{ user.streak }} Days 🔥</strong>
+                </div>
+            </div>
+
+            <!-- Details Grid -->
+            <div class="info-grid">
+                <div class="info-item">
+                    <i class="fa-solid fa-graduation-cap info-icon"></i>
+                    <div class="info-label">Degree Course</div>
+                    <div class="info-value">{{ user.course }}</div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fa-solid fa-calendar-days info-icon"></i>
+                    <div class="info-label">Academic Year</div>
+                    <div class="info-value">{{ user.year }}</div>
+                </div>
+
+                <div class="info-item" style="grid-column: span 2;">
+                    <i class="fa-solid fa-building-columns info-icon"></i>
+                    <div class="info-label">Engineering Institution</div>
+                    <div class="info-value">{{ user.college }}</div>
+                </div>
+            </div>
+
+            <a href="{{ url_for('dashboard') }}" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+            </a>
+
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Interview Preparation System</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-purple: #7F56D9;
+            --primary-hover: #6941C6;
+            --bg-light: #f8f9fa;
+            --card-border: #eaecf0;
+            --text-dark: #101828;
+            --text-muted: #475467;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Navigation Menu Bar */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary-purple);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 16px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            color: var(--primary-purple);
+            background: #f4ebff;
+        }
+
+        .nav-btn.signin {
+            background: var(--primary-purple);
+            color: #ffffff;
+        }
+
+        .nav-btn.signin:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1100px;
+            margin: 60px auto 40px;
+            padding: 0 20px;
+            gap: 40px;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .college-tag {
+            background: #f4ebff;
+            color: var(--primary-purple);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            color: var(--text-dark);
+        }
+
+        .gradient-text {
+            color: var(--primary-purple);
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .hero-action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary-purple);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-dark);
+            border: 1px solid var(--card-border);
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+        }
+
+        /* Student Stats Row */
+        .student-stats-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .stat-pill {
+            background: white;
+            border: 1px solid var(--card-border);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Hero Right Visual */
+        .hero-visual {
+            flex: 0.8;
+            background: white;
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            text-align: center;
+            position: relative;
+        }
+
+        .student-anim-icon {
+            font-size: 80px;
+            color: var(--primary-purple);
+            margin-bottom: 20px;
+        }
+
+        .floating-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge-pill {
+            background: #f8f9fa;
+            border: 1px solid var(--card-border);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Upload Section */
+        .upload-container {
+            max-width: 800px;
+            margin: 40px auto 80px;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .upload-header-box {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .glass-upload-card {
+            background: white;
+            border: 2px dashed var(--card-border);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            transition: border-color 0.2s ease;
+        }
+
+        .glass-upload-card:hover {
+            border-color: var(--primary-purple);
+        }
+
+        .drop-zone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pdf-anim-icon {
+            font-size: 40px;
+            color: var(--primary-purple);
+        }
+
+        .custom-file-input {
+            margin-top: 10px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(16, 24, 40, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex !important;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 24px -4px rgba(16, 24, 40, 0.1);
+            position: relative;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-purple);
+        }
+
+        .close-modal-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            margin-top: 15px;
+            font-weight: 600;
+            font-size: 13px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                flex-direction: column;
+                margin: 30px auto;
+            }
+            .hero-visual {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Menu Bar -->
+    <header class="top-navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-brain"></i>
+            <span>AI Interview Prep</span>
+        </div>
+        <div class="nav-right">
+            <a href="{{ url_for('dashboard') }}" class="nav-btn"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <button class="nav-btn" onclick="scrollToUpload()"><i class="fa-solid fa-compass"></i> Explore</button>
+            <button class="nav-btn signin" onclick="openModal()"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="college-tag">
+                <i class="fa-solid fa-graduation-cap"></i> Built for College Students & Graduates
+            </div>
+            <h1 class="hero-title">
+                Prepare Smarter.<br>
+                <span class="gradient-text">Get Interview Ready.</span>
+            </h1>
+            <p class="hero-subtitle">
+                AI-powered practice, adaptive questions, resume skill extraction, and targeted recovery for your dream placement.
+            </p>
+            
+            <div class="hero-action-buttons">
+                <button class="btn btn-primary" onclick="scrollToUpload()">
+                    <i class="fa-solid fa-rocket"></i> Get Started Now
+                </button>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                    <i class="fa-solid fa-layer-group"></i> View Dashboard
+                </a>
+            </div>
+
+            <!-- Feature Badges -->
+            <div class="student-stats-row">
+                <div class="stat-pill"><i class="fa-solid fa-file-invoice"></i> PDF Resume Parsing</div>
+                <div class="stat-pill"><i class="fa-solid fa-bullseye"></i> Weak Skill Recovery</div>
+                <div class="stat-pill"><i class="fa-solid fa-bolt"></i> Real-time Evaluation</div>
+            </div>
+        </div>
+
+        <!-- Right Side Animated Visual -->
+        <div class="hero-visual">
+            <i class="fa-solid fa-laptop-code student-anim-icon"></i>
+            <div class="floating-badges">
+                <span class="badge-pill" style="color: #0284c7;"><i class="fa-brands fa-python"></i> Python 90%</span>
+                <span class="badge-pill" style="color: #16a34a;"><i class="fa-solid fa-database"></i> SQL Mastery</span>
+                <span class="badge-pill" style="color: #7f56d9;"><i class="fa-solid fa-brain"></i> Adaptive Engine</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scroll Down Upload Section -->
+    <section id="upload-section" class="upload-container">
+        <div class="upload-header-box">
+            <h2 class="section-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Your Resume</h2>
+            <p style="color: var(--text-muted); font-size: 14px;">
+                Drag & drop your PDF resume to parse tech skills and launch your assessment cycle.
+            </p>
+        </div>
+
+        <div class="glass-upload-card">
+            <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+                <div class="drop-zone">
+                    <i class="fa-solid fa-file-pdf pdf-anim-icon"></i>
+                    <p style="font-weight: 600; font-size: 15px;">Select or Drag PDF Resume</p>
+                    <input type="file" name="resume" accept=".pdf" required class="custom-file-input"><br><br>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-bolt"></i> Upload & Extract Skills
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Sign In Modal Popup -->
+    <div id="signinModal" class="modal">
+        <div class="modal-content">
+            <span class="college-tag">PRO Version 2.0</span>
+            <h2 style="font-size: 20px; margin-bottom: 6px;">Student Sign In</h2>
+            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Sign in to start your adaptive interview journey & build daily streaks.</p>
+            
+            <form action="{{ url_for('signin') }}" method="POST">
+                <div class="input-group">
+                    <input type="email" name="email" placeholder="Enter College Email ID" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" name="password" placeholder="Enter Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    Sign In & Continue
+                </button>
+            </form>
+            <button onclick="closeModal()" class="close-modal-btn"><i class="fa-solid fa-xmark"></i> Close</button>
+        </div>
+    </div>
+
+    <!-- JavaScript Actions -->
+    <script>
+        function scrollToUpload() {
+            const uploadSection = document.getElementById('upload-section');
+            if (uploadSection) {
+                uploadSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        function openModal() {
+            const modal = document.getElementById('signinModal');
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+        function closeModal() {
+            const modal = document.getElementById('signinModal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('signinModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+    </script>
+</body>
+</html>

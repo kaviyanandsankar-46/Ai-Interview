@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Analysis - AI Interview Prep</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-light: #ffffff;
+            --card-bg: #f8fafc;
+            --card-border: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --accent-blue: #0284c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        /* Top Navigation Bar */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-blue);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 16px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            color: var(--text-dark);
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .nav-btn.signin {
+            background: var(--accent-blue);
+            color: #ffffff;
+        }
+
+        .nav-btn.signin:hover {
+            background: #0369a1;
+        }
+
+        /* Analysis Wrapper */
+        .analysis-wrapper {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 45px;
+            background: var(--bg-light);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .analysis-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .analysis-header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Large Animated Score Banner */
+        .score-hero-card {
+            background: linear-gradient(135deg, #f1f5f9, #ffffff);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .circle-progress-box {
+            position: relative;
+            width: 170px;
+            height: 170px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .circle-progress-box svg {
+            width: 170px;
+            height: 170px;
+            transform: rotate(-90deg);
+        }
+
+        .circle-progress-box circle {
+            fill: none;
+            stroke-width: 14;
+            stroke-linecap: round;
+        }
+
+        .bg-circle { stroke: rgba(0, 0, 0, 0.08); }
+
+        .fill-circle {
+            stroke: url(#scoreGradient);
+            stroke-dasharray: 440;
+            stroke-dashoffset: var(--score-offset, 440);
+            transition: stroke-dashoffset 1.5s ease-in-out;
+            filter: drop-shadow(0 0 6px rgba(2, 132, 199, 0.3));
+        }
+
+        .score-percentage-text {
+            position: absolute;
+            font-size: 2.3rem;
+            font-weight: 900;
+            color: var(--accent-blue);
+        }
+
+        .score-details-box {
+            z-index: 1;
+            text-align: left;
+        }
+
+        .score-details-box h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .score-details-box p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+        }
+
+        .stat-highlight {
+            display: inline-block;
+            background: rgba(2, 132, 199, 0.1);
+            color: var(--accent-blue);
+            padding: 6px 16px;
+            border-radius: 12px;
+            font-weight: 800;
+            border: 1px solid rgba(2, 132, 199, 0.2);
+        }
+
+        /* Large Weak Skills Section */
+        .weak-skills-card {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 22px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.05);
+        }
+
+        .weak-skills-card h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #991b1b;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .skills-grid {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .large-weak-badge {
+            background: #ffffff;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+            padding: 12px 24px;
+            border-radius: 16px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1);
+        }
+
+        /* Big Action Buttons Grid */
+        .action-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .btn-action-large {
+            padding: 18px 24px;
+            border-radius: 16px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            color: #fff;
+        }
+
+        .btn-recovery { background: linear-gradient(135deg, #4f46e5, #9333ea); }
+        .btn-mistakes { background: linear-gradient(135deg, #7c3aed, #db2777); }
+        .btn-learning { background: linear-gradient(135deg, #2563eb, #0891b2); }
+
+        .btn-action-large:hover {
+            transform: translateY(-3px);
+            opacity: 0.95;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Mock Interview Section Box */
+        .mock-banner-card {
+            margin-top: 35px;
+            text-align: center;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 22px;
+            padding: 35px;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.05);
+        }
+
+        .btn-mock-start {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: #ffffff;
+            border-radius: 14px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+            margin-top: 15px;
+        }
+
+        .btn-mock-start:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #0369a1, #1d4ed8);
+        }
+
+        @media (max-width: 768px) {
+            .analysis-wrapper { padding: 20px; }
+            .score-hero-card { flex-direction: column; text-align: center; }
+            .score-details-box { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <header class="top-navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-brain"></i>
+            <span>AI Interview Prep</span>
+        </div>
+        <div class="nav-right">
+            <a href="{{ url_for('dashboard') }}" class="nav-btn"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="{{ url_for('index') }}" class="nav-btn"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="{{ url_for('profile') }}" class="nav-btn signin"><i class="fa-solid fa-user"></i> Profile</a>
+        </div>
+    </header>
+
+    <div class="analysis-wrapper">
+        <!-- Page Title Header -->
+        <div class="analysis-header">
+            <h1 style="color: var(--text-dark);"><i class="fa-solid fa-chart-line" style="color: var(--accent-blue);"></i> Performance Analysis</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem; margin-top: 8px;">Detailed evaluation of your initial assessment score & weak skills</p>
+        </div>
+
+        <!-- Animated Hero Score Ring Banner -->
+        <div class="score-hero-card">
+            <div class="circle-progress-box" style="--score-offset: calc(440 - (440 * {{ score_percentage|default(0)|int }}) / 100);">
+                <svg>
+                    <defs>
+                        <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0284c7" />
+                            <stop offset="100%" stop-color="#9333ea" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="bg-circle" cx="85" cy="85" r="70"></circle>
+                    <circle class="fill-circle" cx="85" cy="85" r="70"></circle>
+                </svg>
+                <div class="score-percentage-text">{{ score_percentage }}%</div>
+            </div>
+
+            <div class="score-details-box">
+                <h2>Assessment Summary</h2>
+                <p>Accuracy Status: <span class="stat-highlight">{{ correct_answers }} / {{ total_questions }} Correct Answers</span></p>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 10px;">
+                    <i class="fa-solid fa-circle-info"></i> Skills with less than 80% accuracy are flagged for targeted recovery.
+                </p>
+            </div>
+        </div>
+
+        <!-- Identified Weak Skills Card -->
+        <div class="weak-skills-card">
+            <h3>
+                <i class="fa-solid fa-triangle-exclamation" style="color: #dc2626;"></i>
+                Identified Weak Skills (&lt; 80% Accuracy)
+            </h3>
+            
+            <div class="skills-grid">
+                {% for sk in weak_skills %}
+                    <span class="large-weak-badge">
+                        <i class="fa-solid fa-bolt"></i> {{ sk }}
+                    </span>
+                {% else %}
+                    <div style="color: #16a34a; font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-circle-check" style="font-size: 1.5rem;"></i>
+                        No weak skills detected! Excellent performance across all areas.
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Action Buttons Grid -->
+        <div class="action-buttons-grid">
+            <a href="{{ url_for('skill_recovery') }}" class="btn-action-large btn-recovery">
+                <i class="fa-solid fa-bullseye" style="font-size: 1.2rem;"></i>
+                <span>Targeted Recovery</span>
+            </a>
+
+            <a href="{{ url_for('repeated_mistakes') }}" class="btn-action-large btn-mistakes">
+                <i class="fa-solid fa-bug" style="font-size: 1.2rem;"></i>
+                <span>Mistake Analyzer</span>
+            </a>
+
+            <a href="{{ url_for('recommendations') }}" class="btn-action-large btn-learning">
+                <i class="fa-solid fa-graduation-cap" style="font-size: 1.2rem;"></i>
+                <span>Recommended Resources</span>
+            </a>
+        </div>
+
+        <!-- Live Mock Interview Banner -->
+        <div class="mock-banner-card">
+            <h3 style="color: var(--accent-blue); font-size: 1.4rem; font-weight: 800; margin-bottom: 8px;">
+                <i class="fa-solid fa-comments"></i> Ready for Live 1-on-1 Mock Interview?
+            </h3>
+            <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 15px; max-width: 650px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+                Test your verbal & conceptual skills dynamically with shuffled questions one by one.
+            </p>
+            <a href="{{ url_for('start_mock') }}" class="btn-mock-start">
+                <i class="fa-solid fa-microphone-lines"></i>
+                <span>Start Mock Interview Now</span>
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>

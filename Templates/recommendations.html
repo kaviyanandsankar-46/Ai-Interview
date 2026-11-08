@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommended Learning Resources - AI Interview Prep</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #ffffff;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --text-light: #0f172a;
+            --text-muted: #475569;
+            --accent-blue: #0284c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+        }
+
+        /* Top Navigation Bar */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-blue);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            padding: 8px 16px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            color: var(--accent-blue);
+            border-color: var(--accent-blue);
+            background: rgba(2, 132, 199, 0.08);
+        }
+
+        /* Container */
+        .rec-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 45px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .rec-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .rec-header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .skill-section-card {
+            background: #f8fafc;
+            border: 1px solid var(--card-border);
+            border-radius: 22px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .skill-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .skill-heading {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .resource-box {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .resource-box:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.12);
+        }
+
+        .resource-badge {
+            background: rgba(99, 102, 241, 0.1);
+            color: #4f46e5;
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            width: fit-content;
+            margin-bottom: 10px;
+        }
+
+        .resource-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .resource-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn-visit {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-visit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35);
+            background: linear-gradient(135deg, #1d4ed8, #0284c7);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <header class="top-navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-brain"></i>
+            <span>AI Interview Prep</span>
+        </div>
+        <div class="nav-right">
+            <a href="{{ url_for('dashboard') }}" class="nav-btn"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="{{ url_for('analysis') }}" class="nav-btn"><i class="fa-solid fa-arrow-left"></i> Back to Analysis</a>
+        </div>
+    </header>
+
+    <div class="rec-container">
+        <!-- Header -->
+        <div class="rec-header">
+            <h1 style="color: var(--text-light);"><i class="fa-solid fa-graduation-cap" style="color: var(--accent-blue);"></i> Recommended Learning Resources</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem; margin-top: 8px;">
+                Targeted study materials and platform links for your identified weak skills.
+            </p>
+        </div>
+
+        {% if recommendations %}
+            {% for skill, resources in recommendations.items() %}
+                <div class="skill-section-card">
+                    <div class="skill-title-row">
+                        <div class="skill-heading">
+                            <i class="fa-solid fa-bolt"></i> Skill: {{ skill }}
+                        </div>
+                        <span style="font-size: 0.9rem; color: var(--text-muted);"><i class="fa-solid fa-book-open"></i> {{ resources|length }} Resources Available</span>
+                    </div>
+
+                    <div class="resources-grid">
+                        {% for res in resources %}
+                            <div class="resource-box">
+                                <div>
+                                    <span class="resource-badge">
+                                        {% if res.badge %}{{ res.badge }} ({% endif %}{{ res.platform }}{% if res.badge %}){% endif %}
+                                    </span>
+                                    <div class="resource-title">{{ res.title }}</div>
+                                    <div class="resource-desc">{{ res.desc }}</div>
+                                </div>
+                                <a href="{{ res.link }}" target="_blank" class="btn-visit">
+                                    <span>Visit Platform</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <!-- Fallback if no weak skills -->
+            <div style="text-align: center; padding: 40px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px;">
+                <i class="fa-solid fa-circle-check" style="font-size: 3rem; color: #16a34a; margin-bottom: 15px;"></i>
+                <h3 style="font-size: 1.4rem; color: var(--text-light);">No weak skills detected!</h3>
+                <p style="color: var(--text-muted); margin-top: 5px;">You performed exceptionally well across all skills.</p>
+                <br>
+                <a href="{{ url_for('dashboard') }}" class="btn-visit" style="text-decoration: none;">Return to Dashboard</a>
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>

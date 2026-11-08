@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Mistake Pattern Analyzer</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #ffffff; 
+            color: #1e293b;
+            padding: 30px; 
+        }
+        .container { max-width: 900px; margin: auto; }
+        .card { 
+            background: #ffffff; 
+            padding: 24px; 
+            border-radius: 12px; 
+            margin-bottom: 20px; 
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+        }
+        .type-title { color: #dc2626; font-size: 18px; font-weight: bold; margin-bottom: 8px; }
+        .advice { 
+            background: #fffbeb; 
+            border-left: 4px solid #f59e0b; 
+            padding: 12px; 
+            margin-top: 12px; 
+            border-radius: 4px; 
+            color: #92400e;
+        }
+        .btn-back { 
+            display: inline-block; 
+            padding: 10px 20px; 
+            background: #4f46e5; 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 6px; 
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn-back:hover { background: #4338ca; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 style="color: #0f172a;">🧠 AI Mistake Pattern Analyzer</h2>
+    <p style="color: #64748b; margin-bottom: 20px;">Insights based on your incorrect assessment answers.</p>
+
+    {% if insights %}
+        {% for pattern in insights %}
+        <div class="card">
+            <div class="type-title">⚠️ Pattern: {{ pattern.type }} ({{ pattern.count }} times / {{ pattern.percentage }}%)</div>
+            <p><b>Affected Skills:</b> {{ pattern.skills }}</p>
+            <div class="advice"><b>💡 AI Recommendation:</b> {{ pattern.advice }}</div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="card">
+            <h3 style="color: #16a34a;">🎉 No mistake patterns detected! Perfect accuracy.</h3>
+        </div>
+    {% endif %}
+
+    <br>
+    <a href="/analysis" class="btn-back">Back to Analysis</a>
+</div>
+</body>
+</html>

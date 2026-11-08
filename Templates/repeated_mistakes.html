@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mistake Pattern Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-light: #ffffff;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --accent-blue: #0284c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #0284c7, #4f46e5);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+        }
+
+        .badge-red {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .mistake-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+
+        .user-ans {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        .correct-ans {
+            color: #16a34a;
+            font-weight: 600;
+        }
+
+        .btn {
+            background: #0284c7;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #0369a1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="gradient-text"><i class="fa-solid fa-bug"></i> Mistake Pattern Analyzer</h1>
+        <p style="color: var(--text-muted); margin-bottom: 25px;">Review wrong answers and learn the correct concepts.</p>
+
+        {% if mistakes %}
+            {% for item in mistakes %}
+                <div class="card">
+                    <span class="badge badge-red">{{ item.skill }}</span>
+                    <p style="font-weight: 700; margin: 12px 0; color: var(--text-dark);">Q: {{ item.question }}</p>
+                    
+                    <div class="mistake-box">
+                        <div style="margin-bottom: 8px;">
+                            <i class="fa-solid fa-xmark" style="color: #dc2626; width: 18px;"></i>
+                            Your Answer: <span class="user-ans">{{ item.user_answer }}</span>
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-check" style="color: #16a34a; width: 18px;"></i>
+                            Correct Answer: <span class="correct-ans">{{ item.correct_answer }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="card" style="text-align: center; padding: 40px 0;">
+                <i class="fa-solid fa-circle-check" style="font-size: 2.5rem; color: #16a34a; margin-bottom: 12px;"></i>
+                <p style="color: #16a34a; font-weight: 700; font-size: 1.1rem;">
+                    Awesome Job! No repeated mistakes found in your attempts.
+                </p>
+            </div>
+        {% endif %}
+
+        <div style="margin-top: 25px; display: flex; gap: 15px;">
+            <a href="{{ url_for('analysis') }}" class="btn"><i class="fa-solid fa-arrow-left"></i> Back to Analysis</a>
+            <a href="{{ url_for('skill_recovery') }}" class="btn"><i class="fa-solid fa-bullseye"></i> Start Recovery Practice</a>
+        </div>
+    </div>
+</body>
+</html>

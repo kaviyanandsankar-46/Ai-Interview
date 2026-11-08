@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Initial Skill Assessment - AI Interview Prep</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-light: #ffffff;
+            --card-bg: #f8fafc;
+            --card-border: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --accent-blue: #0284c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        /* Top Navigation Bar */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-blue);
+        }
+
+        .stat-pill {
+            background: rgba(2, 132, 199, 0.1);
+            border: 1px solid rgba(2, 132, 199, 0.3);
+            color: var(--accent-blue);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .assessment-container {
+            max-width: 950px;
+            margin: 40px auto;
+            padding: 40px;
+            background: var(--bg-light);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-card {
+            background: #f8fafc;
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+        }
+
+        .question-card:hover {
+            border-color: rgba(2, 132, 199, 0.3);
+            box-shadow: 0 8px 20px rgba(2, 132, 199, 0.08);
+        }
+
+        .skill-tag {
+            background: rgba(2, 132, 199, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(2, 132, 199, 0.2);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .q-text {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .option-label {
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            padding: 12px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.98rem;
+            color: #334155;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .option-label:hover {
+            background: #f0f9ff;
+            border-color: var(--accent-blue);
+            color: var(--text-dark);
+        }
+
+        .option-label input[type="radio"] {
+            accent-color: var(--accent-blue);
+            width: 18px;
+            height: 18px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4);
+            background: linear-gradient(135deg, #0369a1, #1d4ed8);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <header class="top-navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-brain"></i>
+            <span>AI Interview Prep</span>
+        </div>
+        <div class="nav-right">
+            <span class="stat-pill"><i class="fa-solid fa-layer-group"></i> Total Questions: {{ questions|length }}</span>
+        </div>
+    </header>
+
+    <div class="assessment-container">
+        <div style="text-align: center; margin-bottom: 35px;">
+            <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 8px; color: var(--text-dark);"><i class="fa-solid fa-list-check" style="color: var(--accent-blue);"></i> Initial Skill Assessment</h1>
+            <p style="color: var(--text-muted); font-size: 1.05rem;">
+                Select the best answer for each question extracted & mixed from your resume tech stack.
+            </p>
+        </div>
+
+        <form action="{{ url_for('submit_assessment') }}" method="POST">
+            {% for q in questions %}
+                <div class="question-card">
+                    <span class="skill-tag"><i class="fa-solid fa-code"></i> {{ q.skill }}</span>
+                    <div class="q-text">
+                        <span style="color: var(--accent-blue);">Q{{ loop.index }}:</span> {{ q.question }}
+                    </div>
+
+                    <div class="options-grid">
+                        {% for opt in q.options %}
+                            <label class="option-label">
+                                <input type="radio" name="question_{{ q.id }}" value="{{ opt }}" required>
+                                <span>{{ opt }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div style="text-align: center; margin-top: 35px;">
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Assessment & Analyze
+                </button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

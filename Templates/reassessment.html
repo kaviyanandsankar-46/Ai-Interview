@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reassessment Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #ffffff; 
+            padding: 40px; 
+            color: #1f2937; 
+            text-align: center; 
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: #ffffff; 
+            padding: 40px; 
+            border-radius: 16px; 
+            border: 1px solid #eaecf0; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .score-comparison { display: flex; justify-content: space-around; margin: 30px 0; font-size: 24px; font-weight: 700; }
+        .btn { background: #7f56d9; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🎉 Recovery Session Completed!</h2>
+        <p>Your daily practice streak has been updated to <strong>{{ streak_count }} Days 🔥</strong></p>
+        
+        <div class="score-comparison">
+            <div>
+                <p style="font-size: 14px; color: #475467;">Before Recovery</p>
+                <span style="color: #b42318;">{{ before_score }}%</span>
+            </div>
+            <div>
+                <p style="font-size: 14px; color: #475467;">After Recovery</p>
+                <span style="color: #027a48;">{{ after_score }}%</span>
+            </div>
+        </div>
+        
+        <a href="/dashboard" class="btn">Return to Dashboard</a>
+    </div>
+</body>
+</html>

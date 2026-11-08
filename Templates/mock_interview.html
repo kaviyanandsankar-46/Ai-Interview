@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live 1-on-1 Mock Interview - AI Interview Prep</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-light: #ffffff;
+            --bg-sidebar: #ffffff;
+            --card-border: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --accent-blue: #0284c7;
+            --accent-blue-hover: #0369a1;
+            --badge-bg: #f0f9ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 30px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--accent-blue);
+        }
+
+        .stat-pill {
+            background: var(--badge-bg);
+            border: 1px solid #bae6fd;
+            color: var(--accent-blue);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mock-container {
+            max-width: 820px;
+            margin: 40px auto;
+            padding: 35px;
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .skill-tag {
+            background: var(--badge-bg);
+            color: var(--accent-blue);
+            border: 1px solid #bae6fd;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .q-counter {
+            color: var(--accent-blue);
+            font-weight: 700;
+            font-size: 14px;
+            background: #ffffff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--card-border);
+        }
+
+        .question-card {
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .textarea-wrapper {
+            position: relative;
+        }
+
+        .mock-textarea {
+            width: 100%;
+            height: 140px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 14px;
+            padding-right: 55px;
+            color: var(--text-dark);
+            font-size: 1rem;
+            line-height: 1.5;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .mock-textarea:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .btn-mic {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--badge-bg);
+            border: 1px solid #bae6fd;
+            color: var(--accent-blue);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-mic:hover {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-mic.recording {
+            background: #dc2626;
+            color: #ffffff;
+            border-color: #dc2626;
+        }
+
+        .feedback-badge {
+            display: none;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .feedback-badge.success {
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+            display: flex;
+        }
+
+        .feedback-badge.error {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+            display: flex;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .lang-hint {
+            color: var(--text-muted);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-next {
+            background: var(--accent-blue);
+            color: white;
+            padding: 12px 26px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-next:hover {
+            background: var(--accent-blue-hover);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-brain"></i>
+            <span>AI Interview Prep</span>
+        </div>
+        <div class="nav-right">
+            <span class="stat-pill"><i class="fa-solid fa-microphone-lines"></i> Live 1-on-1 Mock Session</span>
+        </div>
+    </header>
+
+    <div class="mock-container">
+        <div class="progress-header">
+            <span class="skill-tag" id="skillTag" data-skill="{{ question.skill | lower }}">
+                <i class="fa-solid fa-code"></i> {{ question.skill }}
+            </span>
+            <span class="q-counter">
+                Question {{ q_num }} of {{ total }}
+            </span>
+        </div>
+
+        <form id="mockForm" action="{{ url_for('mock_interview') }}" method="POST">
+            
+            <div id="feedbackIndicator" class="feedback-badge">
+                <i id="feedbackIcon" style="margin-top: 2px;"></i>
+                <div id="feedbackText"></div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text">
+                    {{ question.question }}
+                </div>
+                
+                <div class="textarea-wrapper">
+                    <textarea 
+                        id="answerBox"
+                        name="answer" 
+                        class="mock-textarea" 
+                        placeholder="Type your code/explanation or click the microphone to speak..." 
+                        required 
+                        autofocus></textarea>
+                    
+                    <button type="button" id="micBtn" class="btn-mic" title="Click to speak">
+                        <i class="fa-solid fa-microphone"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="action-bar">
+                <div class="lang-hint">
+                    <i class="fa-solid fa-language" style="color: var(--accent-blue);"></i> Text typing & Speech-to-text mic supported
+                </div>
+                <button type="submit" id="nextBtn" class="btn-next">
+                    <span>Submit Answer & Next</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Speech Recognition setup
+        const micBtn = document.getElementById('micBtn');
+        const answerBox = document.getElementById('answerBox');
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            micBtn.addEventListener('click', () => {
+                recognition.start();
+                micBtn.classList.add('recording');
+                micBtn.title = "Listening...";
+            });
+
+            recognition.onresult = (event) => {
+                const speechToText = event.results[0][0].transcript;
+                answerBox.value += (answerBox.value ? " " : "") + speechToText;
+                micBtn.classList.remove('recording');
+                micBtn.title = "Click to speak";
+            };
+
+            recognition.onerror = () => { micBtn.classList.remove('recording'); };
+            recognition.onend = () => { micBtn.classList.remove('recording'); };
+        } else {
+            micBtn.style.display = 'none';
+        }
+
+        // Programming Domain Keyword Knowledge Base for Answer Evaluation
+        const skillKeywords = {
+            'python': ['def', 'return', 'list', 'dict', 'tuple', 'lambda', 'self', 'class', 'import', 'pandas', 'numpy', 'range', 'enumerate', 'try', 'except'],
+            'sql': ['select', 'from', 'where', 'join', 'group by', 'order by', 'having', 'insert', 'update', 'delete', 'table', 'index', 'primary key', 'foreign key'],
+            'javascript': ['const', 'let', 'var', 'function', 'return', 'async', 'await', 'promise', 'fetch', 'map', 'filter', 'reduce', 'document', 'event'],
+            'java': ['public', 'private', 'class', 'void', 'static', 'string', 'int', 'return', 'interface', 'extends', 'implements', 'new', 'null'],
+            'cpp': ['include', 'cout', 'cin', 'vector', 'pointer', 'class', 'public', 'private', 'return', 'template', 'namespace', 'std'],
+            'general': ['algorithm', 'function', 'variable', 'data', 'structure', 'loop', 'memory', 'complexity', 'time', 'space', 'object', 'array']
+        };
+
+        const mockForm = document.getElementById('mockForm');
+        const nextBtn = document.getElementById('nextBtn');
+        const feedbackIndicator = document.getElementById('feedbackIndicator');
+        const feedbackIcon = document.getElementById('feedbackIcon');
+        const feedbackText = document.getElementById('feedbackText');
+        const skillTag = document.getElementById('skillTag');
+
+        let isVerified = false;
+
+        mockForm.addEventListener('submit', (e) => {
+            const userAns = answerBox.value.trim().toLowerCase();
+
+            if (userAns.length < 5) {
+                e.preventDefault();
+                alert("Please provide a more detailed answer before submitting!");
+                answerBox.focus();
+                return;
+            }
+
+            if (!isVerified) {
+                e.preventDefault();
+
+                // Determine skill domain
+                const currentSkill = (skillTag.getAttribute('data-skill') || 'general').trim().toLowerCase();
+                const expectedKeywords = skillKeywords[currentSkill] || skillKeywords['general'];
+
+                // Count keyword matches
+                const matchedCount = expectedKeywords.filter(kw => userAns.includes(kw)).length;
+                const isCorrect = userAns.length > 35 && matchedCount >= 1;
+
+                if (isCorrect) {
+                    feedbackIndicator.className = "feedback-badge success";
+                    feedbackIcon.className = "fa-solid fa-circle-check";
+                    feedbackText.innerHTML = "<strong>✅ Answer Validated & Correct!</strong> Great explanation incorporating core programming concepts.";
+                } else {
+                    feedbackIndicator.className = "feedback-badge error";
+                    feedbackIcon.className = "fa-solid fa-circle-xmark";
+                    feedbackText.innerHTML = `<strong>⚠️ Needs Improvement:</strong> Answer registered, but missing key concepts expected for ${currentSkill.toUpperCase()} (e.g., keywords like ${expectedKeywords.slice(0, 4).join(', ')}).`;
+                }
+
+                nextBtn.disabled = true;
+                nextBtn.innerHTML = "Processing Score...";
+
+                setTimeout(() => {
+                    isVerified = true;
+                    mockForm.submit();
+                }, 1200);
+            }
+        });
+    </script>
+
+</body>
+</html>

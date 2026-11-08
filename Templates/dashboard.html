@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AI Interview Prep</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-purple: #7F56D9;
+            --primary-hover: #6941C6;
+            --bg-light: #ffffff;
+            --card-bg: #f8fafc;
+            --card-border: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --accent-blue: #0284c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        /* Top Navigation Bar */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-blue);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 16px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            color: var(--text-dark);
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .dashboard-container {
+            max-width: 1150px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            background: linear-gradient(135deg, #f1f5f9, #ffffff);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 35px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .welcome-text h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .welcome-text p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .streak-badge {
+            background: rgba(251, 146, 60, 0.1);
+            border: 1px solid rgba(251, 146, 60, 0.3);
+            color: #c2410c;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .quick-action-btn {
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .quick-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4);
+            background: linear-gradient(135deg, #0369a1, #1d4ed8);
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dash-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            margin-bottom: 25px;
+        }
+
+        .dash-card-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Upload Widget Style */
+        .upload-box {
+            border: 2px dashed rgba(2, 132, 199, 0.3);
+            border-radius: 14px;
+            padding: 25px;
+            text-align: center;
+            background: #ffffff;
+            margin-top: 15px;
+        }
+
+        input[type="file"] {
+            color: var(--text-muted);
+            margin: 15px 0;
+        }
+
+        .btn-upload {
+            background: var(--accent-blue);
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-upload:hover {
+            background: #0369a1;
+        }
+
+        /* Action Buttons Footer Row */
+        .action-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn-custom {
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-profile { background: #475569; }
+        .btn-mock { background: #059669; }
+        .btn-logout { background: #dc2626; }
+        .btn-custom:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* Skill Mastery Progress Bars */
+        .skill-bar-item {
+            margin-bottom: 18px;
+        }
+
+        .skill-info {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .progress-track {
+            background: #e2e8f0;
+            height: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0284c7, #9333ea);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <header class="top-navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-brain"></i>
+            <span>AI Interview Prep</span>
+        </div>
+        <div class="nav-right">
+            <span style="font-size: 14px; color: var(--text-muted);"><i class="fa-solid fa-user-circle" style="color: var(--accent-blue);"></i> {{ user_name }}</span>
+            <a href="{{ url_for('logout') }}" class="nav-btn" style="color: #dc2626;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+            <div class="welcome-text">
+                <h1>Welcome back, <span style="color: var(--accent-blue);">{{ user_name }}</span>! 👋</h1>
+                <p>Your AI interview readiness platform is active and ready for session analytics.</p>
+            </div>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <div class="streak-badge">
+                    🔥 Streak: {{ streak_count }} Days
+                </div>
+                <a href="{{ url_for('assessment') }}" class="quick-action-btn">
+                    <i class="fa-solid fa-bolt"></i> Start Assessment
+                </a>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid (Upload Resume & Skill Mastery) -->
+        <div class="dashboard-grid">
+            
+            <!-- Upload Resume Card -->
+            <div class="dash-card">
+                <div class="dash-card-title">
+                    <i class="fa-solid fa-file-pdf" style="color: var(--accent-blue);"></i> Resume Skill Parser
+                </div>
+                <p style="color: var(--text-muted); font-size: 14px; line-height: 1.5;">
+                    Upload your latest PDF resume. Our backend will use RegEx keyword extraction to map out your core technical skill stack.
+                </p>
+                <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" class="upload-box">
+                    <input type="file" name="resume" accept=".pdf" required><br>
+                    <button type="submit" class="btn-upload">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Parse Resume & Extract Skills
+                    </button>
+                </form>
+            </div>
+
+            <!-- Skill Mastery Progress Bars -->
+            <div class="dash-card">
+                <div class="dash-card-title">
+                    <i class="fa-solid fa-layer-group" style="color: #9333ea;"></i> Skill Mastery Levels
+                </div>
+                
+                <div class="skill-bar-item">
+                    <div class="skill-info">
+                        <span><i class="fa-brands fa-python" style="color: var(--accent-blue);"></i> Python & Backend</span>
+                        <span style="color: var(--accent-blue);">90%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" style="width: 90%;"></div>
+                    </div>
+                </div>
+
+                <div class="skill-bar-item">
+                    <div class="skill-info">
+                        <span><i class="fa-solid fa-database" style="color: #9333ea;"></i> SQL & Databases</span>
+                        <span style="color: #9333ea;">76%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" style="width: 76%; background: linear-gradient(90deg, #9333ea, #db2777);"></div>
+                    </div>
+                </div>
+
+                <div class="skill-bar-item">
+                    <div class="skill-info">
+                        <span><i class="fa-solid fa-brain" style="color: #16a34a;"></i> Adaptive Logic / ML</span>
+                        <span style="color: #16a34a;">81%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" style="width: 81%; background: linear-gradient(90deg, #16a34a, #0284c7);"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Extra Nav Options Row -->
+        <div class="action-row">
+            <a href="{{ url_for('profile') }}" class="btn-custom btn-profile"><i class="fa-solid fa-user"></i> View Profile</a>
+            <a href="{{ url_for('start_mock') }}" class="btn-custom btn-mock"><i class="fa-solid fa-microphone-lines"></i> Start Mock Interview</a>
+            <a href="{{ url_for('logout') }}" class="btn-custom btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout Session</a>
+        </div>
+
+    </div>
+
+</body>
+</html>
